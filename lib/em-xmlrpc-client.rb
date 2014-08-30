@@ -129,7 +129,8 @@ module XMLRPC
       conn_opts[:ssl] = @ssl_options if @ssl_options
 
       proto = @use_ssl ? 'https' : 'http'
-      http = EM::HttpRequest.new("#{proto}://#{@host}:#{@port}#{@path}").post :body => request, :timeout => @timeout      http.callback{ fiber.resume }
+      http = EM::HttpRequest.new("#{proto}://#{@host}:#{@port}#{@path}").post :body => request, :timeout => @timeout     
+      http.callback{ fiber.resume }
       http.errback do
         # Unfortunately, we can't determine exactly what the error is using EventMachine < 1.0.
         error = RuntimeError.new("connection or timeout error")
