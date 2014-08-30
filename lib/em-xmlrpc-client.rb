@@ -125,7 +125,8 @@ module XMLRPC
 
     def do_rpc_em_http(async, request, header)
       fiber = Fiber.current
-      http = EM::HttpRequest.new("http://#{@host}:#{@port}#{@path}").post :body => request, :timeout => @timeout
+      proto = @use_ssl ? 'https' : 'http'
+      http = EM::HttpRequest.new("#{proto}://#{@host}:#{@port}#{@path}").post :body => request, :timeout => @timeout
       http.callback{ fiber.resume }
       http.errback do
         # Unfortunately, we can't determine exactly what the error is using EventMachine < 1.0.
