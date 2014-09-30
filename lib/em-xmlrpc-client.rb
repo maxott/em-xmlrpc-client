@@ -127,6 +127,7 @@ module XMLRPC
 
       conn_opts = @connection_options || {}
       conn_opts[:ssl] = @ssl_options if @ssl_options
+      conn_opts[:inactivity_timeout] = @timeout
 
       proto = @use_ssl ? 'https' : 'http'
       http = EM::HttpRequest.new("#{proto}://#{@host}:#{@port}#{@path}", conn_opts).post :body => request, :timeout => @timeout     
